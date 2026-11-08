@@ -1,21 +1,32 @@
 {
-    "manifest_version": 2,
-    "name": "No Shorts for YouTube",
-    "version": "1.1",
-    "description": "Полностью убирает раздел Shorts с YouTube: боковое меню, рекомендации и заголовки.",
-    "icons": {
+  "manifest_version": 3,
+  "name": "No Shorts for YouTube",
+  "version": "2.0.0",
+  "description": "Hides YouTube Shorts and other distracting chrome. No settings — it just works.",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "action": {
+    "default_title": "No Shorts for YouTube",
+    "default_icon": {
       "48": "icons/icon-48.png",
       "96": "icons/icon-96.png"
-    },
-    "permissions": [
-      "*://*.youtube.com/*"
-    ],
-    "content_scripts": [
-      {
-        "matches": ["*://*.youtube.com/*"],
-        "js": ["content.js"],
-        "run_at": "document_end"
-      }
-    ]
+    }
+  },
+  "host_permissions": ["*://*.youtube.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "css": ["hide.css"],
+      "js": ["rewrite.js", "content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "no-shorts-for-youtube@silverbackape1",
+      "strict_min_version": "121.0"
+    }
+  }
 }
-  

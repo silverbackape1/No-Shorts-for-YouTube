@@ -8,27 +8,30 @@
 
 ### Описание
 
-**No Shorts for YouTube** — расширение для Firefox, которое полностью убирает раздел YouTube Shorts. Оно удаляет кнопки, ссылки и блоки, связанные с Shorts, из бокового меню, рекомендаций и других разделов сайта. Идеально для тех, кто предпочитает традиционный формат просмотра видео.
+**No Shorts for YouTube** — расширение без настроек. Оно прячет Shorts и часть отвлекающего хрома YouTube и сразу работает: без попапа и без экрана опций.
 
-> **Доступно в магазине Firefox Add-ons:**  
-> [https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/)
+### Что скрывается
 
-### Функционал
+- Полка Shorts на главной, в поиске, в рекомендациях и на каналах
+- Пункт Shorts в боковом меню, мини-меню и мобильной навигации
+- Карточки Shorts в ленте, поиске, сайдбаре и уведомлениях
+- Вкладка Shorts на канале и чип Shorts
+- Плеер `/shorts/` — переход на обычный `/watch?v=` (вкладка канала `/shorts` ведёт на `/videos`)
+- Remix Shorts, Playables, полка мерча и промо-наги YouTube
 
-- **Удаление ссылок и блоков:** Все элементы, связанные с YouTube Shorts, автоматически удаляются со страницы.
-- **Динамическое отслеживание:** Наблюдение за изменениями в DOM позволяет удалять вновь подгружаемые элементы.
-- **Легкость и быстродействие:** Расширение работает быстро и не замедляет работу браузера.
+Обычный длинный ролик (плеер, описание, комментарии, похожие видео) не трогается.
 
 ### Установка
 
-1. Скачайте ZIP-архив с [релизом](#) проекта.
-2. Откройте Firefox и перейдите по адресу `about:debugging#/runtime/this-firefox`.
-3. Нажмите **«Загрузить временное дополнение…»** и выберите файл `manifest.json` из архива.
-4. Наслаждайтесь просмотром YouTube без Shorts!
+1. Скачайте исходники релиза.
+2. Chrome / Edge: `chrome://extensions` → режим разработчика → **Загрузить распакованное**.
+3. Firefox: `about:debugging#/runtime/this-firefox` → **Загрузить временное дополнение…** → `manifest.json`.
+
+> Ранее: [Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/)
 
 ### Лицензия
 
-Проект распространяется под лицензией **MIT**.
+MIT.
 
 ---
 
@@ -36,24 +39,29 @@
 
 ### Description
 
-**No Shorts for YouTube** is a Firefox extension that completely removes the YouTube Shorts section. It eliminates all buttons, links, and blocks related to Shorts from the sidebar, recommendations, and other parts of the site—perfect for users who prefer the traditional video viewing experience.
+**No Shorts for YouTube** is a settings-free Web Extension. It hides Shorts and a handful of other attention traps and then stays out of the way: no popup, no options page.
 
-> **Available on the Firefox Add-ons store:**  
-> [https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/)
+### What it hides
 
-### Features
+- Shorts shelves on Home, Search, related/sidebar, and channels
+- Shorts in the guide, mini-guide, and mobile pivot
+- Individual Shorts cards in feeds, search, the watch sidebar, and notifications
+- The channel Shorts tab and the Shorts filter chip
+- `/shorts/` playback (redirects to the normal `/watch?v=` player; a channel `/shorts` tab goes to `/videos`)
+- Shorts remix, Playables, merch shelves, and YouTube promo nags
 
-- **Block and Link Removal:** Automatically removes all elements related to YouTube Shorts.
-- **Dynamic Monitoring:** Uses DOM mutation observers to remove new elements as they load.
-- **Lightweight & Fast:** Runs smoothly without slowing down your browser.
+Normal long-form watch (player, description, comments, related videos) is left alone.
 
-### Installation
+### Install
 
-1. Download the ZIP archive from the [release](#) page.
-2. Open Firefox and navigate to `about:debugging#/runtime/this-firefox`.
-3. Click **"Load Temporary Add-on..."** and select the `manifest.json` file from the archive.
-4. Enjoy YouTube without Shorts!
+1. Get the source from a release.
+2. Chrome / Edge: `chrome://extensions` → Developer mode → **Load unpacked**.
+3. Firefox: `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → `manifest.json`.
+
+> Previously listed on [Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/).
+
+This is a standard MV3 Web Extension (content scripts + CSS only) so a later Safari conversion can reuse the same files.
 
 ### License
 
-This project is licensed under the **MIT License**.
+MIT.

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>No Shorts fixture</title>
+    <link rel="stylesheet" href="../hide.css" />
+    <style>
+      body {
+        font: 14px/1.4 system-ui, sans-serif;
+        background: #0f0f0f;
+        color: #f1f1f1;
+        margin: 0;
+        padding: 24px;
+      }
+      h1 {
+        font-size: 18px;
+        font-weight: 600;
+      }
+      section {
+        margin: 16px 0;
+        padding: 12px;
+        border: 1px solid #333;
+        border-radius: 8px;
+      }
+      .keep {
+        background: #1b3d1b;
+      }
+      .hide {
+        background: #3d1b1b;
+      }
+      a {
+        color: #9cf;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>YouTube shell (custom elements)</h1>
+
+    <section class="keep" id="long-form">
+      <ytd-rich-item-renderer>
+        <a href="/watch?v=longform">Long-form video card</a>
+      </ytd-rich-item-renderer>
+      <ytd-compact-video-renderer>
+        <a href="/watch?v=related">Related long-form</a>
+      </ytd-compact-video-renderer>
+      <ytd-guide-entry-renderer>
+        <a href="/feed/subscriptions">Subscriptions</a>
+      </ytd-guide-entry-renderer>
+    </section>
+
+    <section class="hide" id="shorts-nav">
+      <ytd-guide-entry-renderer>
+        <a href="/shorts" title="Shorts">Shorts nav</a>
+      </ytd-guide-entry-renderer>
+      <ytd-mini-guide-entry-renderer>
+        <a href="/shorts">Mini Shorts</a>
+      </ytd-mini-guide-entry-renderer>
+      <ytm-pivot-bar-item-renderer>
+        <a href="/shorts"><span class="pivot-shorts">Shorts</span></a>
+      </ytm-pivot-bar-item-renderer>
+    </section>
+
+    <section class="hide" id="shorts-shelf">
+      <ytd-rich-shelf-renderer is-shorts>
+        <a href="/shorts/aaaaaaaaaaa">Home Shorts shelf</a>
+      </ytd-rich-shelf-renderer>
+      <ytd-reel-shelf-renderer>
+        <a href="/shorts/bbbbbbbbbbb">Remix / related Shorts shelf</a>
+      </ytd-reel-shelf-renderer>
+      <grid-shelf-view-model>
+        <a href="/shorts/ccccccccccc">Search Shorts shelf</a>
+      </grid-shelf-view-model>
+    </section>
+
+    <section class="hide" id="shorts-cards">
+      <ytd-video-renderer>
+        <a href="/shorts/ddddddddddd">Search Shorts result</a>
+      </ytd-video-renderer>
+      <ytd-compact-video-renderer>
+        <a href="/shorts/eeeeeeeeeee">Sidebar Shorts</a>
+      </ytd-compact-video-renderer>
+      <ytm-shorts-lockup-view-model>Mobile lockup</ytm-shorts-lockup-view-model>
+    </section>
+
+    <section class="hide" id="clutter">
+      <ytd-merch-shelf-renderer>Merch shelf</ytd-merch-shelf-renderer>
+      <ytd-mealbar-promo-renderer>Premium nag</ytd-mealbar-promo-renderer>
+      <ytd-feed-nudge-renderer>Feed nudge</ytd-feed-nudge-renderer>
+      <grid-shelf-view-model>
+        <a href="/playables">Playables</a>
+      </grid-shelf-view-model>
+    </section>
+    <pre id="results"></pre>
+    <script>
+      const hiddenIds = ["shorts-nav", "shorts-shelf", "shorts-cards", "clutter"];
+      const visibleSelectors = [
+        '#long-form ytd-rich-item-renderer',
+        '#long-form ytd-compact-video-renderer',
+        '#long-form ytd-guide-entry-renderer',
+      ];
+      const hiddenSelectors = [
+        'ytd-guide-entry-renderer:has(a[href^="/shorts"])',
+        'ytd-mini-guide-entry-renderer',
+        'ytm-pivot-bar-item-renderer',
+        'ytd-rich-shelf-renderer[is-shorts]',
+        'ytd-reel-shelf-renderer',
+        'grid-shelf-view-model:has(a[href^="/shorts"])',
+        'ytd-video-renderer:has(a[href^="/shorts"])',
+        'ytd-compact-video-renderer:has(a[href^="/shorts"])',
+        'ytm-shorts-lockup-view-model',
+        'ytd-merch-shelf-renderer',
+        'ytd-mealbar-promo-renderer',
+        'ytd-feed-nudge-renderer',
+        'grid-shelf-view-model:has(a[href*="/playables"])',
+      ];
+      function isHidden(el) {
+        return el && getComputedStyle(el).display === "none";
+      }
+      const failures = [];
+      visibleSelectors.forEach((sel) => {
+        const el = document.querySelector(sel);
+        if (!el || isHidden(el)) failures.push("should show " + sel);
+      });
+      hiddenSelectors.forEach((sel) => {
+        const el = document.querySelector(sel);
+        if (!el || !isHidden(el)) failures.push("should hide " + sel);
+      });
+      hiddenIds.forEach((id) => {
+        const section = document.getElementById(id);
+        const kids = [...section.children].filter((n) => n.tagName !== "PRE");
+        kids.forEach((kid) => {
+          if (!isHidden(kid)) failures.push("section " + id + " child visible: " + kid.tagName);
+        });
+      });
+      const out = failures.length ? "FAIL\n" + failures.join("\n") : "PASS";
+      document.getElementById("results").textContent = out;
+      document.title = failures.length ? "FAIL" : "PASS";
+    </script>
+  </body>
+</html>

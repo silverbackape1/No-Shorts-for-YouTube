@@ -1,0 +1,135 @@
+/* No Shorts for YouTube — hide Shorts and a few attention traps.
+   CSS-first so YouTube's virtual scroller keeps its nodes (no .remove()). */
+
+[data-nsfy-hide] {
+  display: none !important;
+}
+
+/* Dedicated Shorts player / feed */
+ytd-shorts,
+ytd-reel-video-renderer,
+ytd-shorts-page,
+shorts-page,
+#shorts-container,
+#shorts-player,
+ytm-shorts,
+ytm-shorts-player-page-renderer,
+ytm-reel-watch-page-renderer,
+ytm-shorts-watch-page-renderer {
+  display: none !important;
+}
+
+/* Home / channel / search shelves of Shorts */
+ytd-reel-shelf-renderer,
+ytd-rich-shelf-renderer[is-shorts],
+ytd-rich-shelf-renderer[is-shorts-grid],
+ytm-reel-shelf-renderer,
+ytm-shorts-lockup-view-model,
+ytm-shorts-lockup-view-model-v2,
+grid-shelf-view-model:has(a[href^="/shorts"]),
+ytd-rich-shelf-renderer:has(a[href^="/shorts"]),
+ytm-rich-section-renderer:has(ytm-reel-shelf-renderer),
+ytm-rich-section-renderer:has(a[href^="/shorts"]),
+ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
+ytd-rich-section-renderer:has(ytd-reel-shelf-renderer),
+ytd-rich-section-renderer:has(grid-shelf-view-model a[href^="/shorts"]),
+ytd-rich-grid-group:has(a[href^="/shorts"]) {
+  display: none !important;
+}
+
+/* Search-only: drop the whole section when it is a Shorts shelf */
+ytd-search ytd-item-section-renderer:has(ytd-reel-shelf-renderer),
+ytd-search ytd-item-section-renderer:has(grid-shelf-view-model a[href^="/shorts"]),
+ytd-search ytd-shelf-renderer:has(a[href^="/shorts"]) {
+  display: none !important;
+}
+
+/* Individual Shorts cards in mixed grids (home, subs, search, related) */
+ytd-rich-item-renderer:has(a[href^="/shorts"]),
+ytd-grid-video-renderer:has(a[href^="/shorts"]),
+ytd-video-renderer:has(a[href^="/shorts"]),
+ytd-compact-video-renderer:has(a[href^="/shorts"]),
+ytd-compact-movie-renderer:has(a[href^="/shorts"]),
+ytd-reel-item-renderer,
+ytm-reel-item-renderer,
+ytm-rich-item-renderer:has(a[href^="/shorts"]),
+ytm-video-with-context-renderer:has(a[href^="/shorts"]),
+ytm-compact-video-renderer:has(a[href^="/shorts"]),
+ytm-grid-video-renderer:has(a[href^="/shorts"]),
+ytd-rich-item-renderer:has([overlay-style="SHORTS"]),
+ytd-grid-video-renderer:has([overlay-style="SHORTS"]),
+ytd-video-renderer:has([overlay-style="SHORTS"]),
+ytd-compact-video-renderer:has([overlay-style="SHORTS"]) {
+  display: none !important;
+}
+
+/* Sidebar + mini-guide + mobile pivot */
+ytd-guide-entry-renderer:has(a[href^="/shorts"]),
+ytd-guide-entry-renderer:has(a[title="Shorts"]),
+ytd-mini-guide-entry-renderer:has(a[href^="/shorts"]),
+ytd-mini-guide-entry-renderer:has(a[aria-label="Shorts"]),
+ytm-pivot-bar-item-renderer:has(a[href^="/shorts"]),
+ytm-pivot-bar-item-renderer:has(.pivot-shorts),
+ytm-pivot-bar-item-renderer:has([class*="pivot-shorts"]) {
+  display: none !important;
+}
+
+/* Channel Shorts tab + Home "Shorts" chip */
+yt-tab-shape[tab-title="Shorts"],
+yt-tab-shape:has(a[href$="/shorts"]),
+yt-tab-shape:has(a[href*="/shorts?"]),
+tp-yt-paper-tab:has(.tab-content[aria-label="Shorts"]),
+tp-yt-paper-tab:has(a[href$="/shorts"]),
+yt-chip-cloud-chip-renderer:has(a[href^="/shorts"]),
+yt-chip-cloud-chip-shape-wiz:has(a[href^="/shorts"]) {
+  display: none !important;
+}
+
+/* Notifications that deep-link into Shorts */
+ytd-notification-renderer:has(a[href^="/shorts"]),
+ytm-notification-renderer:has(a[href^="/shorts"]) {
+  display: none !important;
+}
+
+/* Watch-page Shorts remix shelf + remix / "create a Short" actions */
+ytd-reel-shelf-renderer,
+#actions ytd-button-renderer:has([aria-label*="Remix" i]),
+#actions yt-button-view-model:has([aria-label*="Remix" i]),
+#actions ytd-button-renderer:has([aria-label*="Ремикс"]),
+#player .ytp-button[aria-label*="Remix" i],
+ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-shorts"],
+ytd-engagement-panel-section-list-renderer[target-id*="shorts"] {
+  display: none !important;
+}
+
+/* End-screen / next-up tiles that are Shorts */
+.ytp-ce-video:has(a[href^="/shorts"]),
+.ytp-videowall-still:has([overlay-style="SHORTS"]),
+.ytp-modern-videowall-still:has(a[href^="/shorts"]) {
+  display: none !important;
+}
+
+/* Playables + merch / shopping shelves (attention traps, not long-form watch) */
+ytd-rich-shelf-renderer:has(a[href*="/playables"]),
+grid-shelf-view-model:has(a[href*="/playables"]),
+ytd-rich-section-renderer:has(a[href*="/playables"]),
+ytd-merch-shelf-renderer,
+ytd-product-shelf-renderer,
+#merch-shelf,
+ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-shopping-container"] {
+  display: none !important;
+}
+
+/* Promo nags, surveys, feed nudges — not the watch player */
+ytd-banner-promo-renderer,
+ytd-statement-banner-renderer,
+ytd-mealbar-promo-renderer,
+yt-mealbar-promo-renderer,
+ytd-promo-panel-renderer,
+ytd-primetime-promo-renderer,
+ytd-brand-video-shelf-renderer,
+ytd-feed-nudge-renderer,
+ytd-inline-survey-renderer,
+ytm-promoted-sparkles-web-renderer {
+  display: none !important;
+}
