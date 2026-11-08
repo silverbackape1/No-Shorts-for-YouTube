@@ -2,7 +2,7 @@
 
 [Русский](#russian-version) | [English](#english-version)
 
-The same MV3 files (`manifest.json`, `hide.css`, `rewrite.js`, `content.js`) work in Chromium browsers and, through the Xcode wrapper in `safari/`, in Safari on macOS. There is no popup and no settings screen.
+The same MV3 files (`manifest.json`, `hide.css`, `rewrite.js`, `content.js`) work in Chromium browsers and, through a prebuilt macOS app on [Releases](https://github.com/silverbackape1/No-Shorts-for-YouTube/releases), in Safari. There is no popup and no settings screen. You do not need Xcode.
 
 ---
 
@@ -38,50 +38,18 @@ The same MV3 files (`manifest.json`, `hide.css`, `rewrite.js`, `content.js`) wor
 
 > Ранее расширение было в [каталоге Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/).
 
-### 4. Safari на macOS (Xcode)
+### 4. Safari на macOS (без Xcode)
 
-Safari не умеет «загрузить распакованное» как Chrome. Нужно один раз собрать маленькое приложение-обёртку. **Платный Apple Developer Program не нужен.** iOS в этот проект не входит.
+**Xcode качать не нужно** (это ~10 ГБ). Готовое приложение собирается на GitHub и лежит в [Releases](https://github.com/silverbackape1/No-Shorts-for-YouTube/releases). Платный Apple Developer Program тоже не нужен. iOS в этот проект не входит.
 
-#### Что понадобится
+1. Откройте [Releases](https://github.com/silverbackape1/No-Shorts-for-YouTube/releases) и скачайте **NoShortsForYouTube-Safari-macOS.zip** (последний тег `v…`).
+2. Распакуйте архив. Внутри папка с `NoShortsForYouTube.app` и файлом «Read Me.txt».
+3. По желанию перетащите приложение в **Программы**.
+4. Если macOS пишет, что разработчика проверить не удалось: **Control-клик** (правый клик) по приложению → **Открыть** → **Открыть**.  
+   Либо в Терминале: `xattr -cr NoShortsForYouTube.app`
+5. **Запустите приложение один раз**, чтобы Safari его увидел. Окно можно сразу закрыть.
 
-- Mac с macOS 12 или новее
-- [Xcode](https://apps.apple.com/app/xcode/id497799835) из App Store (бесплатно, большой загрузчик)
-- Исходники из шага 1
-
-#### Шаг A — откройте проект
-
-1. Запустите **Xcode**. Если он предложит поставить дополнительные компоненты — согласитесь.
-2. **File → Open…** и выберите  
-   `safari/NoShortsForYouTube.xcodeproj`
-3. В панели слева кликните по синей иконке проекта **NoShortsForYouTube**.
-4. Выберите target **NoShortsForYouTube**, вкладка **Signing & Capabilities**:
-   - **Team:** None
-   - **Signing Certificate:** Sign to Run Locally
-5. То же самое для target **NoShortsForYouTube Extension**.
-
-В репозитории это уже проставлено (`CODE_SIGN_IDENTITY = "-"`). Если Xcode всё равно ругается на подпись — вручную выберите **Sign to Run Locally** у обоих target. Если сборка падает на Hardened Runtime — на той же вкладке снимите галочку **Hardened Runtime**.
-
-#### Шаг B — соберите и запустите
-
-1. В верхней панели Xcode в схеме должно быть **NoShortsForYouTube** и **My Mac**.
-2. Нажмите кнопку **▶ Run** (или **Product → Run**, ⌘R).
-3. Откроется маленькое окно приложения. Оно нужно только затем, чтобы Safari увидел расширение. Можно сразу закрыть.
-
-Из Терминала (если Xcode уже установлен):
-
-```bash
-xcodebuild \
-  -project safari/NoShortsForYouTube.xcodeproj \
-  -scheme NoShortsForYouTube \
-  -configuration Debug \
-  -destination 'platform=macOS' \
-  CODE_SIGN_IDENTITY="-" \
-  CODE_SIGNING_ALLOWED=YES
-```
-
-Готовое приложение появится в DerivedData Xcode. Проще нажать ▶ в Xcode.
-
-#### Шаг C — разрешите неподписанные расширения
+#### Разрешите неподписанные расширения
 
 Safari по умолчанию прячет расширения без сертификата разработчика.
 
@@ -91,7 +59,7 @@ Safari по умолчанию прячет расширения без серт
 3. Вкладка **Разработка** (Developer) → включите **Разрешить неподписанные расширения** (*Allow unsigned extensions*). macOS может спросить пароль.
 4. **Этот флажок сбрасывается каждый раз, когда вы полностью закрываете Safari.** После следующего запуска Safari поставьте его снова.
 
-#### Шаг D — включите расширение
+#### Включите расширение
 
 1. **Safari → Настройки → Расширения** (Extensions).
 2. В списке слева поставьте галочку у **No Shorts for YouTube**.
@@ -102,22 +70,49 @@ Safari по умолчанию прячет расширения без серт
 
 #### Если расширения нет в списке
 
-- Убедитесь, что приложение **No Shorts for YouTube** хотя бы один раз запускалось (шаг B).
+- Убедитесь, что **NoShortsForYouTube.app** хотя бы один раз запускалось.
 - Проверьте, что «Allow unsigned extensions» включено *после* запуска Safari.
-- Полностью закройте Safari (Safari → Quit) и откройте снова, затем повторите шаги C и D.
+- Полностью закройте Safari (Safari → Quit) и откройте снова, затем снова включите неподписанные расширения и само расширение.
 
-### 5. Safari без Xcode (временное расширение)
+### 5. Safari, временное расширение (тоже без Xcode)
 
-В Safari 18 и новее можно подключить папку расширения без сборки:
+В Safari 18 и новее можно подключить папку исходников без приложения. Это держится **до 24 часов или до выхода из Safari** — для постоянного варианта берите zip из Releases (раздел 4).
 
-1. Выполните шаг C выше (меню разработчика + Allow unsigned extensions).
+1. Скачайте исходники (шаг 1) и включите неподписанные расширения, как в разделе 4.
 2. **Safari → Настройки → Разработка → Add Temporary Extension…**
 3. Выберите папку с `manifest.json`.
 4. Включите расширение на вкладке **Расширения**.
 
-Safari снимает временные расширения через 24 часа или при выходе из Safari. Для постоянного варианта используйте Xcode (раздел 4).
+### 6. Собрать самому (необязательно, нужен Xcode)
 
-### 6. Пересобрать обёртку конвертером Apple
+Только если вы меняете код и не хотите ждать CI. Обычным людям этот раздел не нужен.
+
+1. Установите [Xcode](https://apps.apple.com/app/xcode/id497799835) из App Store.
+2. Откройте `safari/NoShortsForYouTube.xcodeproj`.
+3. Оба target: **Signing & Capabilities** → Team None, **Sign to Run Locally**. Если сборка падает на Hardened Runtime — снимите эту галочку.
+4. Схема **NoShortsForYouTube**, назначение **My Mac**, ▶ Run.
+
+```bash
+bash safari/build-macos.sh
+# zip появится в dist/NoShortsForYouTube-Safari-macOS.zip
+```
+
+Или напрямую:
+
+```bash
+xcodebuild \
+  -project safari/NoShortsForYouTube.xcodeproj \
+  -scheme NoShortsForYouTube \
+  -configuration Release \
+  -destination 'generic/platform=macOS' \
+  CODE_SIGN_IDENTITY="-" \
+  CODE_SIGNING_ALLOWED=YES \
+  ENABLE_HARDENED_RUNTIME=NO
+```
+
+Релиз на GitHub собирается workflow `.github/workflows/safari-release.yml` при пуше тега `v*` (например `git tag v2.0.0 && git push origin v2.0.0`).
+
+### 7. Пересобрать обёртку конвертером Apple
 
 Проект в `safari/` уже соответствует выходу `safari-web-extension-converter --macos-only` и **ссылается на файлы в корне репозитория**, а не копирует их. Если нужно сгенерировать проект заново на своём Mac:
 
@@ -168,50 +163,18 @@ To update: after `git pull` (or a new ZIP), click the reload button on the **No 
 
 > Previously listed on [Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/).
 
-### 4. Safari on macOS (Xcode)
+### 4. Safari on macOS (no Xcode)
 
-Safari cannot “load unpacked” the way Chrome does. You build a tiny host app once. **You do not need a paid Apple Developer Program membership.** This wrapper is macOS-only (no iOS target).
+**You do not need Xcode** (~10 GB). A prebuilt app is published on [Releases](https://github.com/silverbackape1/No-Shorts-for-YouTube/releases). No paid Apple Developer Program either. This wrapper is macOS-only (no iOS target).
 
-#### What you need
+1. Open [Releases](https://github.com/silverbackape1/No-Shorts-for-YouTube/releases) and download **NoShortsForYouTube-Safari-macOS.zip** (latest `v…` tag).
+2. Unzip it. You get a folder with `NoShortsForYouTube.app` and `Read Me.txt`.
+3. Optionally drag the app into **Applications**.
+4. If macOS says the developer cannot be verified: **Control-click** the app → **Open** → **Open**.  
+   Or in Terminal: `xattr -cr NoShortsForYouTube.app`
+5. **Launch the app once** so Safari can see it. You can close the window.
 
-- A Mac running macOS 12 or later
-- [Xcode](https://apps.apple.com/app/xcode/id497799835) from the App Store (free, large download)
-- The source from step 1
-
-#### Step A — open the project
-
-1. Launch **Xcode**. Install extra components if it asks.
-2. **File → Open…** and choose  
-   `safari/NoShortsForYouTube.xcodeproj`
-3. In the left sidebar, click the blue **NoShortsForYouTube** project icon.
-4. Select the **NoShortsForYouTube** target → **Signing & Capabilities**:
-   - **Team:** None
-   - **Signing Certificate:** Sign to Run Locally
-5. Repeat for the **NoShortsForYouTube Extension** target.
-
-The repo already sets `CODE_SIGN_IDENTITY = "-"`. If Xcode still complains about signing, pick **Sign to Run Locally** on both targets yourself. If the build fails on Hardened Runtime, uncheck **Hardened Runtime** on the same tab for both targets.
-
-#### Step B — build and run
-
-1. In Xcode’s toolbar the scheme should be **NoShortsForYouTube** and the destination **My Mac**.
-2. Click **▶ Run** (or **Product → Run**, ⌘R).
-3. A small app window appears. It only exists so Safari can see the extension. You can close it.
-
-From Terminal (full Xcode already installed):
-
-```bash
-xcodebuild \
-  -project safari/NoShortsForYouTube.xcodeproj \
-  -scheme NoShortsForYouTube \
-  -configuration Debug \
-  -destination 'platform=macOS' \
-  CODE_SIGN_IDENTITY="-" \
-  CODE_SIGNING_ALLOWED=YES
-```
-
-The built app lands in Xcode’s DerivedData. Using ▶ in Xcode is easier.
-
-#### Step C — allow unsigned extensions
+#### Allow unsigned extensions
 
 Safari hides extensions that are not signed with a developer certificate.
 
@@ -221,7 +184,7 @@ Safari hides extensions that are not signed with a developer certificate.
 3. **Developer** tab → enable **Allow unsigned extensions**. macOS may ask for your password.
 4. **This checkbox resets every time you fully quit Safari.** Turn it on again after the next launch.
 
-#### Step D — enable the extension
+#### Enable the extension
 
 1. **Safari → Settings → Extensions**.
 2. Check **No Shorts for YouTube** in the list on the left.
@@ -232,22 +195,49 @@ The host app window has a button that jumps to these Safari settings.
 
 #### If the extension does not appear
 
-- Make sure the **No Shorts for YouTube** app ran at least once (step B).
+- Make sure **NoShortsForYouTube.app** ran at least once.
 - Confirm **Allow unsigned extensions** is on *after* Safari launched.
-- Quit Safari completely (**Safari → Quit**) and reopen it, then repeat steps C and D.
+- Quit Safari completely (**Safari → Quit**) and reopen it, then turn unsigned extensions and the extension back on.
 
-### 5. Safari without Xcode (temporary extension)
+### 5. Safari temporary extension (also no Xcode)
 
-Safari 18 and later can load the folder directly:
+Safari 18 and later can load the source folder without the app. It lasts **24 hours or until you quit Safari** — for a lasting install use the Releases zip (section 4).
 
-1. Do step C above (developer features + Allow unsigned extensions).
+1. Get the source (step 1) and enable unsigned extensions as in section 4.
 2. **Safari → Settings → Developer → Add Temporary Extension…**
 3. Choose the folder that contains `manifest.json`.
 4. Enable it on the **Extensions** tab.
 
-Safari drops temporary extensions after 24 hours or when you quit Safari. Use the Xcode app (section 4) for something that stays installed.
+### 6. Build it yourself (optional, needs Xcode)
 
-### 6. Regenerating the wrapper with Apple’s converter
+Only if you are changing the code and do not want to wait for CI. Skip this as a normal user.
+
+1. Install [Xcode](https://apps.apple.com/app/xcode/id497799835) from the App Store.
+2. Open `safari/NoShortsForYouTube.xcodeproj`.
+3. Both targets: **Signing & Capabilities** → Team None, **Sign to Run Locally**. If the build fails on Hardened Runtime, uncheck it.
+4. Scheme **NoShortsForYouTube**, destination **My Mac**, ▶ Run.
+
+```bash
+bash safari/build-macos.sh
+# zip lands at dist/NoShortsForYouTube-Safari-macOS.zip
+```
+
+Or:
+
+```bash
+xcodebuild \
+  -project safari/NoShortsForYouTube.xcodeproj \
+  -scheme NoShortsForYouTube \
+  -configuration Release \
+  -destination 'generic/platform=macOS' \
+  CODE_SIGN_IDENTITY="-" \
+  CODE_SIGNING_ALLOWED=YES \
+  ENABLE_HARDENED_RUNTIME=NO
+```
+
+GitHub Releases are produced by `.github/workflows/safari-release.yml` when a `v*` tag is pushed (`git tag v2.0.0 && git push origin v2.0.0`).
+
+### 7. Regenerating the wrapper with Apple’s converter
 
 `safari/` already matches `safari-web-extension-converter --macos-only` and **references the repo-root extension files** instead of copying them. To regenerate on a Mac:
 

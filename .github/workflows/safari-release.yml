@@ -1,0 +1,52 @@
+name: Safari macOS release
+
+on:
+  push:
+    tags:
+      - "v*"
+  pull_request:
+    paths:
+      - "safari/**"
+      - "manifest.json"
+      - "content.js"
+      - "rewrite.js"
+      - "hide.css"
+      - "icons/**"
+      - ".github/workflows/safari-release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  safari-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Build unsigned Safari .app zip
+        run: bash safari/build-macos.sh "$GITHUB_WORKSPACE/dist"
+
+      - name: Upload zip (Actions artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: NoShortsForYouTube-Safari-macOS
+          path: dist/NoShortsForYouTube-Safari-macOS.zip
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          ZIP="dist/NoShortsForYouTube-Safari-macOS.zip"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIP" --clobber
+          else
+            gh release create "$TAG" "$ZIP" \
+              --title "$TAG — Safari for macOS" \
+              --notes-file safari/RELEASE-README.txt
+          fi

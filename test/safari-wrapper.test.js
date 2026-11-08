@@ -88,4 +88,20 @@ describe("install guide", () => {
     assert.match(install, /xcodebuild/);
     assert.match(install, /safari-web-extension-converter/);
   });
+
+  it("tells people to download a prebuilt Safari app instead of installing Xcode", () => {
+    const readme = fs.readFileSync(README, "utf8");
+    const install = fs.readFileSync(INSTALL, "utf8");
+    const workflow = fs.readFileSync(
+      path.join(ROOT, ".github/workflows/safari-release.yml"),
+      "utf8"
+    );
+    assert.match(readme, /NoShortsForYouTube-Safari-macOS\.zip/);
+    assert.match(install, /NoShortsForYouTube-Safari-macOS\.zip/);
+    assert.match(install, /github\.com\/silverbackape1\/No-Shorts-for-YouTube\/releases/);
+    assert.match(install, /Xcode качать не нужно|do not need Xcode/i);
+    assert.match(workflow, /macos-latest/);
+    assert.match(workflow, /safari\/build-macos\.sh/);
+    assert.match(workflow, /gh release create/);
+  });
 });

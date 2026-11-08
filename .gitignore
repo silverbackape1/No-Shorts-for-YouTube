@@ -9,3 +9,5 @@ build/
 *.dSYM.zip
 *.dSYM
 safari-generated/
+.derived-safari/
+dist/

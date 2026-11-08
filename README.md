@@ -30,7 +30,7 @@
 1. Скачайте исходники (Code → Download ZIP) или сделайте `git clone`.
 2. **Chrome / Edge / Brave:** `chrome://extensions` → режим разработчика → **Загрузить распакованное** → папка с `manifest.json`.
 3. **Firefox:** `about:debugging#/runtime/this-firefox` → **Загрузить временное дополнение…** → `manifest.json`.
-4. **Safari на Mac:** откройте `safari/NoShortsForYouTube.xcodeproj` в Xcode → Run → в Safari включите «Allow unsigned extensions» и само расширение. Платный Developer Program не нужен.
+4. **Safari на Mac:** скачайте **NoShortsForYouTube-Safari-macOS.zip** с [Releases](https://github.com/silverbackape1/No-Shorts-for-YouTube/releases), откройте приложение один раз, в Safari включите «Allow unsigned extensions» и само расширение. **Xcode не нужен.**
 
 > Ранее: [Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/)
 
@@ -64,7 +64,7 @@ Short version; the full walkthrough is **[INSTALL.md](INSTALL.md)**.
 1. Get the source (Code → Download ZIP) or `git clone`.
 2. **Chrome / Edge / Brave:** `chrome://extensions` → Developer mode → **Load unpacked** → the folder that contains `manifest.json`.
 3. **Firefox:** `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → `manifest.json`.
-4. **Safari on Mac:** open `safari/NoShortsForYouTube.xcodeproj` in Xcode → Run → in Safari enable “Allow unsigned extensions” and the extension itself. No paid Developer Program needed.
+4. **Safari on Mac:** download **NoShortsForYouTube-Safari-macOS.zip** from [Releases](https://github.com/silverbackape1/No-Shorts-for-YouTube/releases), open the app once, then in Safari enable “Allow unsigned extensions” and the extension. **Xcode is not required.**
 
 > Previously listed on [Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/).
 
