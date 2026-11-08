@@ -2,6 +2,8 @@
 
 [Русский](#russian-version) | [English](#english-version)
 
+Пошаговая установка: **[INSTALL.md](INSTALL.md)** (Chrome / Edge / Brave, Firefox, Safari на macOS).
+
 ---
 
 ## Russian Version <a id="russian-version"></a>
@@ -23,9 +25,12 @@
 
 ### Установка
 
-1. Скачайте исходники релиза.
-2. Chrome / Edge: `chrome://extensions` → режим разработчика → **Загрузить распакованное**.
-3. Firefox: `about:debugging#/runtime/this-firefox` → **Загрузить временное дополнение…** → `manifest.json`.
+Короткая шпаргалка; подробности — в **[INSTALL.md](INSTALL.md)**.
+
+1. Скачайте исходники (Code → Download ZIP) или сделайте `git clone`.
+2. **Chrome / Edge / Brave:** `chrome://extensions` → режим разработчика → **Загрузить распакованное** → папка с `manifest.json`.
+3. **Firefox:** `about:debugging#/runtime/this-firefox` → **Загрузить временное дополнение…** → `manifest.json`.
+4. **Safari на Mac:** откройте `safari/NoShortsForYouTube.xcodeproj` в Xcode → Run → в Safari включите «Allow unsigned extensions» и само расширение. Платный Developer Program не нужен.
 
 > Ранее: [Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/)
 
@@ -54,13 +59,16 @@ Normal long-form watch (player, description, comments, related videos) is left a
 
 ### Install
 
-1. Get the source from a release.
-2. Chrome / Edge: `chrome://extensions` → Developer mode → **Load unpacked**.
-3. Firefox: `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → `manifest.json`.
+Short version; the full walkthrough is **[INSTALL.md](INSTALL.md)**.
+
+1. Get the source (Code → Download ZIP) or `git clone`.
+2. **Chrome / Edge / Brave:** `chrome://extensions` → Developer mode → **Load unpacked** → the folder that contains `manifest.json`.
+3. **Firefox:** `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → `manifest.json`.
+4. **Safari on Mac:** open `safari/NoShortsForYouTube.xcodeproj` in Xcode → Run → in Safari enable “Allow unsigned extensions” and the extension itself. No paid Developer Program needed.
 
 > Previously listed on [Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/no-shorts-for-youtube/).
 
-This is a standard MV3 Web Extension (content scripts + CSS only) so a later Safari conversion can reuse the same files.
+This is a standard MV3 Web Extension (content scripts + CSS only). The Safari wrapper in `safari/` references those same files.
 
 ### License
 
