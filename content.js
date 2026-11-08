@@ -1,34 +1,139 @@
-(function() {
-  function removeShorts() {
-    // Удаляем кнопку Shorts в боковом меню
-    document.querySelectorAll("ytd-guide-entry-renderer").forEach(entry => {
-      const link = entry.querySelector("a");
-      if (link && (link.href.includes("/shorts") || link.textContent.trim().toLowerCase() === "shorts")) {
-        entry.remove();
-      }
-    });
+(function () {
+  "use strict";
 
-    // Удаляем заголовок с id="rich-shelf-header", если в нём встречается слово "shorts"
-    document.querySelectorAll("#rich-shelf-header").forEach(header => {
-      if (header.textContent.trim().toLowerCase().includes("shorts")) {
-        header.remove();
-      }
-    });
+  var rewrite = (typeof NoShortsRewrite !== "undefined" && NoShortsRewrite) || {};
+  var rewriteYouTubeLocation = rewrite.rewriteYouTubeLocation;
 
-    // Удаляем родительский элемент для всех ссылок, содержащих "/shorts/"
-    document.querySelectorAll("a[href*='/shorts/']").forEach(anchor => {
-      if (anchor.parentElement) {
-        anchor.parentElement.remove();
+  var LINK_ANCESTORS = [
+    "ytd-guide-entry-renderer",
+    "ytd-mini-guide-entry-renderer",
+    "ytm-pivot-bar-item-renderer",
+    "ytd-rich-item-renderer",
+    "ytd-grid-video-renderer",
+    "ytd-video-renderer",
+    "ytd-compact-video-renderer",
+    "ytd-compact-movie-renderer",
+    "ytd-notification-renderer",
+    "ytm-notification-renderer",
+    "ytm-video-with-context-renderer",
+    "ytm-rich-item-renderer",
+    "ytm-compact-video-renderer",
+    "ytm-grid-video-renderer",
+    "ytd-reel-item-renderer",
+    "ytm-reel-item-renderer",
+    "grid-shelf-view-model",
+    "ytd-rich-shelf-renderer",
+    "ytd-reel-shelf-renderer",
+    "ytm-reel-shelf-renderer",
+    "ytd-rich-section-renderer",
+    "ytm-rich-section-renderer",
+    "yt-tab-shape",
+    "tp-yt-paper-tab",
+    "yt-chip-cloud-chip-renderer",
+    "yt-chip-cloud-chip-shape-wiz",
+  ].join(",");
+
+  var scheduled = false;
+
+  function applyRedirect() {
+    if (typeof rewriteYouTubeLocation !== "function") return;
+    var next = rewriteYouTubeLocation(
+      location.pathname,
+      location.search,
+      location.hash
+    );
+    if (!next) return;
+    var current = location.pathname + location.search + location.hash;
+    if (next !== current) {
+      location.replace(next);
+    }
+  }
+
+  function hrefLooksLikeShorts(href) {
+    try {
+      var url = new URL(href, location.origin);
+      if (!/(^|\.)youtube\.com$/i.test(url.hostname)) return false;
+      return /^\/shorts(\/|$)/.test(url.pathname);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function hideNode(node) {
+    if (node && !node.hasAttribute("data-nsfy-hide")) {
+      node.setAttribute("data-nsfy-hide", "");
+    }
+  }
+
+  function hideLeftovers() {
+    var links = document.querySelectorAll('a[href*="/shorts"]');
+    for (var i = 0; i < links.length; i++) {
+      var anchor = links[i];
+      if (!hrefLooksLikeShorts(anchor.getAttribute("href") || anchor.href)) {
+        continue;
       }
+      hideNode(anchor.closest(LINK_ANCESTORS) || anchor);
+    }
+
+    var chips = document.querySelectorAll(
+      "yt-chip-cloud-chip-renderer, yt-chip-cloud-chip-shape-wiz"
+    );
+    for (var c = 0; c < chips.length; c++) {
+      var label = (chips[c].textContent || "").trim().toLowerCase();
+      if (label === "shorts") hideNode(chips[c]);
+    }
+  }
+
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(function () {
+      scheduled = false;
+      applyRedirect();
+      hideLeftovers();
     });
   }
 
-  // Первичный запуск удаления
-  removeShorts();
+  applyRedirect();
 
-  // Наблюдатель за изменениями в DOM без дебаунса
-  const observer = new MutationObserver(() => {
-    removeShorts();
+  document.addEventListener("yt-navigate-start", applyRedirect, true);
+  document.addEventListener("yt-navigate-finish", schedule, true);
+  document.addEventListener("yt-page-data-updated", schedule, true);
+  window.addEventListener("popstate", applyRedirect);
+
+  document.addEventListener(
+    "click",
+    function (event) {
+      var anchor = event.target && event.target.closest
+        ? event.target.closest("a[href]")
+        : null;
+      if (!anchor || typeof rewriteYouTubeLocation !== "function") return;
+      var href = anchor.getAttribute("href") || "";
+      if (href.indexOf("shorts") === -1) return;
+      try {
+        var url = new URL(href, location.origin);
+        if (!/(^|\.)youtube\.com$/i.test(url.hostname)) return;
+        var dest = rewriteYouTubeLocation(url.pathname, url.search, url.hash);
+        if (!dest) return;
+        event.preventDefault();
+        event.stopPropagation();
+        location.assign(dest);
+      } catch (e) {
+        /* ignore malformed hrefs */
+      }
+    },
+    true
+  );
+
+  var observer = new MutationObserver(schedule);
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
   });
-  observer.observe(document.body, { childList: true, subtree: true });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", schedule);
+  } else {
+    schedule();
+  }
 })();
